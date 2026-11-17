@@ -37,7 +37,7 @@ jobs:
           npm install --legacy-peer-deps --no-save @capacitor/core@6.2.0 @capacitor/cli@6.2.0 @capacitor/android@6.2.0
           python3 -m pip install --quiet pillow || true
           rm -rf android/app android/capacitor-cordova-android-plugins android/gradle android/gradlew android/build.gradle android/settings.gradle || true
-          [ -d android ] || npx cap add android
+          npx cap add android
           npx cap sync android
           python3 android/patch-capacitor-android.py
 
