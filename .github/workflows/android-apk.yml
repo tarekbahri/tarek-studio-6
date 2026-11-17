@@ -29,12 +29,12 @@ jobs:
       - name: Install dependencies & build TAREK web bundle
         run: |
           rm -f public/tarek-complete-source.zip
-          npm install --no-audit --no-fund
+          npm install --legacy-peer-deps --no-audit --no-fund
           npm run build
 
       - name: Initialize Capacitor Android project & apply TAREK native configuration
         run: |
-          npm install --no-save @capacitor/core@6.2.0 @capacitor/cli@6.2.0 @capacitor/android@6.2.0
+          npm install --legacy-peer-deps --no-save @capacitor/core@6.2.0 @capacitor/cli@6.2.0 @capacitor/android@6.2.0
           python3 -m pip install --quiet pillow || true
           rm -rf android/app android/capacitor-cordova-android-plugins android/gradle android/gradlew android/build.gradle android/settings.gradle || true
           npx cap add android
