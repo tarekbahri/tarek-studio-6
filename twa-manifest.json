@@ -1,0 +1,39 @@
+{
+  "packageId": "com.tarek.studio",
+  "host": "ais-pre-34ehoi2hue6666xnduknpm-942619732197.europe-west2.run.app",
+  "name": "TAREK",
+  "launcherName": "TAREK",
+  "display": "fullscreen",
+  "themeColor": "#090503",
+  "themeColorDark": "#090503",
+  "navigationColor": "#090503",
+  "navigationColorDark": "#090503",
+  "navigationDividerColor": "#090503",
+  "navigationDividerColorDark": "#090503",
+  "backgroundColor": "#090503",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://ais-pre-34ehoi2hue6666xnduknpm-942619732197.europe-west2.run.app/pwa-512x512.png",
+  "maskableIconUrl": "https://ais-pre-34ehoi2hue6666xnduknpm-942619732197.europe-west2.run.app/pwa-maskable-512x512.png",
+  "splashScreenFadeOutDuration": 250,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "tarek"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://ais-pre-34ehoi2hue6666xnduknpm-942619732197.europe-west2.run.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "orientation": "landscape",
+  "fingerprints": [],
+  "minSdkVersion": 24
+}

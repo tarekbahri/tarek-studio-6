@@ -1,0 +1,54 @@
+name: Build TAREK Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout TAREK source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java 17 (required for Capacitor 6 Android Gradle)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies & build TAREK web bundle
+        run: |
+          rm -f public/tarek-complete-source.zip
+          npm install --no-audit --no-fund
+          npm run build
+
+      - name: Initialize Capacitor Android project & apply TAREK native configuration
+        run: |
+          npm install --no-save @capacitor/core@6.2.0 @capacitor/cli@6.2.0 @capacitor/android@6.2.0
+          python3 -m pip install --quiet pillow || true
+          rm -rf android/app android/capacitor-cordova-android-plugins android/gradle android/gradlew android/build.gradle android/settings.gradle || true
+          npx cap add android
+          npx cap sync android
+          python3 android/patch-capacitor-android.py
+
+      - name: Compile Android Debug APK (installable directly without Play Store or Google Cloud Billing)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload Downloadable TAREK APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TAREK-android-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
