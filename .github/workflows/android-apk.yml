@@ -1,0 +1,42 @@
+name: Build TAREK Android APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout TAREK source
+        uses: actions/checkout@v4
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Accept Android SDK Licenses
+        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      - name: Install dependencies & build TAREK web bundle
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
+      - name: Initialize Capacitor Android project & apply TAREK native configuration
+        run: |
+          npm install --legacy-peer-deps --no-save @capacitor/core@6.2.0 @capacitor/cli@6.2.0 @capacitor/android@6.2.0
+          npx cap add android
+          npx cap sync android
+          python3 scripts/patch-capacitor-android.py
+      - name: Compile Android Debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - name: Upload Downloadable TAREK APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TAREK-Studio-Debug-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
